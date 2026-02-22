@@ -1,147 +1,30 @@
 import type { Resource, Alert, Activity, CostData, ResourceStatus, AlertType } from '@/types';
 
-// Simulated delay for realistic API behavior
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Mock AWS resource data
+// Mock data for Vercel deployment without backend
 const MOCK_RESOURCES: Resource[] = [
-    {
-        id: 'ec2-001',
-        name: 'EC2 Instances Running',
-        value: '3',
-        status: 'warning' as ResourceStatus,
-        description: '2 in free tier',
-        type: 'ec2',
-        region: 'us-east-1',
-    },
-    {
-        id: 'ebs-001',
-        name: 'Unused EBS Volumes',
-        value: '2',
-        status: 'critical' as ResourceStatus,
-        description: '$12/month waste',
-        type: 'ebs',
-        region: 'us-east-1',
-    },
-    {
-        id: 'eip-001',
-        name: 'Unattached Elastic IPs',
-        value: '1',
-        status: 'critical' as ResourceStatus,
-        description: '$3.60/month cost',
-        type: 'eip',
-        region: 'us-east-1',
-    },
-    {
-        id: 'rds-001',
-        name: 'RDS Instances',
-        value: '1',
-        status: 'warning' as ResourceStatus,
-        description: 'Not free tier',
-        type: 'rds',
-        region: 'us-east-1',
-    },
-    {
-        id: 'nat-001',
-        name: 'NAT Gateways',
-        value: '0',
-        status: 'safe' as ResourceStatus,
-        description: 'No cost',
-        type: 'nat',
-        region: 'us-east-1',
-    },
-    {
-        id: 's3-001',
-        name: 'Active S3 Buckets',
-        value: '8',
-        status: 'safe' as ResourceStatus,
-        description: '2.4 GB total',
-        type: 's3',
-        region: 'global',
-    },
+    { id: 'i-1234567890abcdef0', name: 'web-server-prod', value: '1', status: 'safe', description: 'running', type: 'ec2', region: 'us-east-1' },
+    { id: 'i-0987654321fedcba0', name: 'api-server-prod', value: '1', status: 'safe', description: 'running', type: 'ec2', region: 'us-west-2' },
+    { id: 'vol-1234567890abcdef0', name: 'data-volume', value: '100', status: 'safe', description: 'in-use', type: 'ebs', region: 'us-east-1' },
+    { id: 'bucket-prod-data', name: 'prod-data-bucket', value: '1', status: 'warning', description: 'public access', type: 's3', region: 'us-east-1' },
+    { id: 'db-prod-mysql', name: 'prod-database', value: '1', status: 'safe', description: 'available', type: 'rds', region: 'us-east-1' },
+    { id: 'lambda-processor', name: 'image-processor', value: '1', status: 'safe', description: 'active', type: 'lambda', region: 'us-east-1' },
+    { id: 'sg-1234567890abcdef0', name: 'web-sg', value: '1', status: 'warning', description: 'open to 0.0.0.0/0', type: 'security-group', region: 'us-east-1' },
+    { id: 'eip-1234567890abcdef0', name: 'nat-eip', value: '1', status: 'safe', description: 'associated', type: 'elastic-ip', region: 'us-east-1' },
 ];
 
 const MOCK_ALERTS: Alert[] = [
-    {
-        id: 'alert-001',
-        type: 'critical' as AlertType,
-        title: 'Unattached Elastic IP detected',
-        description: 'IP 54.123.45.67 may incur charges ($3.60/month)',
-        time: '2 min ago',
-        timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
-    },
-    {
-        id: 'alert-002',
-        type: 'warning' as AlertType,
-        title: 'EC2 instance running for 5+ hours',
-        description: 't2.micro (i-0abc123) in us-east-1',
-        time: '1 hour ago',
-        timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: 'alert-003',
-        type: 'warning' as AlertType,
-        title: 'RDS instance detected (not free tier)',
-        description: 'db.t3.micro - PostgreSQL 14.7',
-        time: '3 hours ago',
-        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: 'alert-004',
-        type: 'info' as AlertType,
-        title: 'Unused EBS volume found',
-        description: 'vol-0xyz789 (8 GB) unattached for 7 days',
-        time: '5 hours ago',
-        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-    },
-];
-
-const MOCK_ACTIVITIES: Activity[] = [
-    {
-        id: 'activity-001',
-        action: 'EC2 instance created',
-        resource: 'i-0abc123def456',
-        time: '10 minutes ago',
-        user: 'admin',
-        timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-        eventType: 'RunInstances',
-    },
-    {
-        id: 'activity-002',
-        action: 'Security group modified',
-        resource: 'sg-0123456789',
-        time: '1 hour ago',
-        user: 'dev-user',
-        timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-        eventType: 'AuthorizeSecurityGroupIngress',
-    },
-    {
-        id: 'activity-003',
-        action: 'S3 bucket created',
-        resource: 'my-app-assets-2026',
-        time: '3 hours ago',
-        user: 'admin',
-        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-        eventType: 'CreateBucket',
-    },
-    {
-        id: 'activity-004',
-        action: 'IAM policy updated',
-        resource: 'CustomS3Access',
-        time: '1 day ago',
-        user: 'admin',
-        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-        eventType: 'PutRolePolicy',
-    },
+    { id: 'alert-1', type: 'critical', title: 'Public S3 Bucket Detected', description: 'S3 bucket "prod-data-bucket" is publicly accessible', time: new Date(Date.now() - 3600000).toLocaleString(), timestamp: new Date(Date.now() - 3600000).toISOString() },
+    { id: 'alert-2', type: 'high', title: 'Security Group Too Permissive', description: 'Security group allows SSH access from 0.0.0.0/0', time: new Date(Date.now() - 7200000).toLocaleString(), timestamp: new Date(Date.now() - 7200000).toISOString() },
+    { id: 'alert-3', type: 'medium', title: 'Unencrypted EBS Volume', description: 'EBS volume "data-volume" is not encrypted', time: new Date(Date.now() - 86400000).toLocaleString(), timestamp: new Date(Date.now() - 86400000).toISOString() },
 ];
 
 const MOCK_COST_DATA: CostData[] = [
-    { month: 'Jan', cost: 245 },
-    { month: 'Feb', cost: 312 },
-    { month: 'Mar', cost: 189 },
-    { month: 'Apr', cost: 278 },
-    { month: 'May', cost: 356 },
-    { month: 'Jun', cost: 423 },
+    { month: 'Jan', cost: 1250 },
+    { month: 'Feb', cost: 1380 },
+    { month: 'Mar', cost: 1520 },
+    { month: 'Apr', cost: 1450 },
+    { month: 'May', cost: 1680 },
+    { month: 'Jun', cost: 1850 },
 ];
 
 export interface HygieneScore {
@@ -153,29 +36,17 @@ export interface HygieneScore {
     recommendations: string[];
 }
 
-const MOCK_HYGIENE_SCORE: HygieneScore = {
-    overall: 72,
-    security: 65,
-    costEfficiency: 78,
-    bestPractices: 74,
-    criticalIssues: 2,
-    recommendations: [
-        'Release unattached Elastic IP to save $3.60/month',
-        'Delete unused EBS volumes to save $12/month',
-        'Consider using Reserved Instances for long-running EC2',
-    ],
-};
-
 /**
- * AWS Service - Mock implementation
- * Replace these with real AWS SDK calls when connecting to actual AWS
+ * AWS Service - Mock implementation for Vercel deployment
+ * Uses mock data instead of backend API calls
  */
 export const awsService = {
     /**
-     * Fetch all AWS resources
+     * Fetch all AWS resources from mock data
      */
     async getResources(): Promise<Resource[]> {
-        await delay(800);
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 300));
         return MOCK_RESOURCES;
     },
 
@@ -183,66 +54,76 @@ export const awsService = {
      * Fetch resources by type
      */
     async getResourcesByType(type: string): Promise<Resource[]> {
-        await delay(600);
+        await new Promise(resolve => setTimeout(resolve, 200));
         return MOCK_RESOURCES.filter(r => r.type === type);
     },
 
     /**
-     * Fetch alerts
+     * Fetch alerts from mock data
      */
     async getAlerts(): Promise<Alert[]> {
-        await delay(600);
+        await new Promise(resolve => setTimeout(resolve, 200));
         return MOCK_ALERTS;
     },
 
     /**
      * Dismiss an alert
      */
-    async dismissAlert(alertId: string): Promise<void> {
-        await delay(300);
-        console.log('Alert dismissed:', alertId);
+    async dismissAlert(_alertId: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 100));
     },
 
     /**
-     * Fetch activities (CloudTrail events)
+     * Fetch activities
      */
-    async getActivities(limit = 10): Promise<Activity[]> {
-        await delay(700);
-        return MOCK_ACTIVITIES.slice(0, limit);
+    async getActivities(_limit = 10): Promise<Activity[]> {
+        await new Promise(resolve => setTimeout(resolve, 200));
+        return [];
     },
 
     /**
-     * Fetch cost data
+     * Fetch cost data from mock data
      */
-    async getCostData(months = 6): Promise<CostData[]> {
-        await delay(500);
-        return MOCK_COST_DATA.slice(-months);
+    async getCostData(_months = 6): Promise<CostData[]> {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        return MOCK_COST_DATA;
     },
 
     /**
      * Get current month cost
      */
     async getCurrentMonthCost(): Promise<number> {
-        await delay(300);
-        return MOCK_COST_DATA[MOCK_COST_DATA.length - 1].cost;
+        await new Promise(resolve => setTimeout(resolve, 200));
+        return 1850;
     },
 
     /**
      * Get hygiene score
      */
     async getHygieneScore(): Promise<HygieneScore> {
-        await delay(600);
-        return MOCK_HYGIENE_SCORE;
+        await new Promise(resolve => setTimeout(resolve, 400));
+        return {
+            overall: 72,
+            security: 65,
+            costEfficiency: 78,
+            bestPractices: 82,
+            criticalIssues: 2,
+            recommendations: [
+                'Make S3 bucket private and enable encryption',
+                'Restrict security group access to specific IPs',
+                'Enable encryption on EBS volumes',
+            ],
+        };
     },
 
     /**
      * Run a new scan
      */
     async runScan(): Promise<{ success: boolean; resourcesScanned: number }> {
-        await delay(2000);
+        await new Promise(resolve => setTimeout(resolve, 2000));
         return {
             success: true,
-            resourcesScanned: Math.floor(Math.random() * 50) + 20,
+            resourcesScanned: MOCK_RESOURCES.length,
         };
     },
 
@@ -250,8 +131,7 @@ export const awsService = {
      * Connect AWS account
      */
     async connectAccount(_accessKeyId: string, _secretAccessKey: string, _region: string): Promise<{ success: boolean; accountId: string }> {
-        await delay(1500);
-        // In production, this would validate credentials with AWS STS
+        await new Promise(resolve => setTimeout(resolve, 500));
         return {
             success: true,
             accountId: '123456789012',
@@ -262,7 +142,6 @@ export const awsService = {
      * Disconnect AWS account
      */
     async disconnectAccount(): Promise<void> {
-        await delay(500);
-        console.log('AWS account disconnected');
+        await new Promise(resolve => setTimeout(resolve, 300));
     },
 };
