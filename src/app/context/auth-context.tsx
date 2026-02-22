@@ -62,7 +62,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 throw new Error(error);
             }
 
-            setUser(user);
+            if (user) {
+                setUser(user);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -81,7 +83,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 throw new Error(error);
             }
 
-            setUser(user);
+            if (user) {
+                setUser(user);
+            }
         } finally {
             setIsLoading(false);
         }

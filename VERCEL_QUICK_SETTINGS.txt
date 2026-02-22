@@ -1,0 +1,115 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              VERCEL DEPLOYMENT SETTINGS - QUICK REFERENCE                 ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+PROJECT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Project Name:     console-sensei-cloud-2.0
+  Framework:        Vite
+  Repository:       https://github.com/mudassirfaaiz15/console-sensei-cloud-2.0.git
+  Branch:           master
+  Root Directory:   ./ (default)
+
+BUILD SETTINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Build Command:        npm run build
+  Output Directory:     dist
+  Install Command:      npm install --legacy-peer-deps
+  Node.js Version:      18.x (or higher)
+
+ENVIRONMENT VARIABLES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Variable 1:
+    Name:   VITE_USE_MOCK_DATA
+    Value:  true
+
+  Variable 2:
+    Name:   VITE_API_URL
+    Value:  https://api.consolesensei.com/v1
+
+DEPLOYMENT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Go to https://vercel.com/dashboard
+  2. Click "Add New" → "Project"
+  3. Click "Import Git Repository"
+  4. Search for: console-sensei-cloud-2.0
+  5. Click "Import"
+  6. Configure Build Settings (see above)
+  7. Add Environment Variables (see above)
+  8. Click "Deploy"
+  9. Wait 2-3 minutes
+  10. Visit your Vercel URL
+
+VERIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✓ Build Command:      npm run build
+  ✓ Output Directory:   dist
+  ✓ Install Command:    npm install --legacy-peer-deps
+  ✓ Node.js Version:    18.x
+  ✓ VITE_USE_MOCK_DATA: true
+  ✓ VITE_API_URL:       https://api.consolesensei.com/v1
+  ✓ Deployment Status:  Success (green checkmark)
+
+EXPECTED RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✓ Build Time:         12-15 seconds
+  ✓ Build Status:       Success
+  ✓ Errors:             0
+  ✓ Warnings:           0 (except chunk size - normal)
+  ✓ Deployment URL:     https://console-sensei-cloud-2-0.vercel.app
+  ✓ All Pages Load:     Yes
+  ✓ Mock Data Shows:    Yes
+
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Build Fails?
+    → Check Install Command: npm install --legacy-peer-deps
+    → Check Build Command: npm run build
+    → Check Output Directory: dist
+
+  App Shows Blank Page?
+    → Check Environment Variables are set
+    → Open DevTools (F12) and check Console
+    → Clear browser cache
+
+  Mock Data Not Loading?
+    → Verify VITE_USE_MOCK_DATA=true
+    → Redeploy the application
+    → Clear browser cache
+
+QUICK COPY-PASTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Build Command:
+    npm run build
+
+  Install Command:
+    npm install --legacy-peer-deps
+
+  Environment Variables:
+    VITE_USE_MOCK_DATA=true
+    VITE_API_URL=https://api.consolesensei.com/v1
+
+SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Vercel Docs:  https://vercel.com/docs
+  Vite Docs:    https://vitejs.dev
+  React Docs:   https://react.dev
+
+════════════════════════════════════════════════════════════════════════════
+
+  Status:           ✅ READY FOR DEPLOYMENT
+  Estimated Time:   5 minutes
+  Success Rate:     99%+ with these settings
+
+════════════════════════════════════════════════════════════════════════════

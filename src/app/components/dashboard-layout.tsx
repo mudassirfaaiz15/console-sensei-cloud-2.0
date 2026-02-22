@@ -132,12 +132,12 @@ export function DashboardLayout() {
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-sm text-muted-foreground">
                 <span className="hidden lg:inline">AWS Account: </span>
-                <span className="font-mono">•••••{user?.awsAccountId || '1234'}</span>
+                <span className="font-mono">•••••{user && user.awsAccountId ? user.awsAccountId : '1234'}</span>
               </div>
               <ThemeToggle />
               <Avatar>
                 <AvatarFallback className="bg-primary text-primary-foreground">
-                  {user?.name?.charAt(0).toUpperCase() || 'U'}
+                  {user && user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                 </AvatarFallback>
               </Avatar>
             </div>
