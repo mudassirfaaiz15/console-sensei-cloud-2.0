@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
@@ -79,10 +79,10 @@ export function DashboardPage() {
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
   // Track page view and start performance monitoring
-  useState(() => {
+  useEffect(() => {
     analytics.trackPageView('Dashboard', '/dashboard');
     performanceMonitor.mark('dashboard-render');
-  });
+  }, []);
 
   // Onboarding
   const { showOnboarding, completeOnboarding } = useOnboarding();
