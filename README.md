@@ -301,42 +301,6 @@ https://multi-cloud-infrastructure-intellig-sage.vercel.app/
 
 ---
 
-# ❌ Out of Scope
-
-- Azure support
-- Google Cloud Platform support
-- Kubernetes-native cost monitoring
-- Enterprise SSO
-- Mobile applications
-- ML-based cost forecasting
-- Real-time WebSocket streaming
-
----
-
-# 🔮 Future Enhancements
-
-## Day 1–2
-
-- Dark mode toggle
-- Resource Health Score Card
-
----
-
-## Day 3
-
-- Cost Budget Email Alerts
-- Cron job integration
-- SendGrid notification system
-
----
-
-## Day 4
-
-- Shareable PDF Reports
-- Extended PDF export system
-
----
-
 # 📊 Key Highlights
 
 - Multi-account AWS intelligence dashboard
